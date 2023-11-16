@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自助打印</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .qr-code-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            }
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            margin-top: 10px;
+            }
+        footer {
+            padding: 10px;
+            text-align: center;
+        }
+        footer p {
+            font-size: 13px; /* 修改字体大小 */
+        }
+        footer a {
+            text-decoration: none; /* 去掉下划线 */
+            color: #333; /* 设置链接颜色 */
+        }
+        
+        footer a:hover {
+            text-decoration: underline; /* 鼠标悬停时显示下划线 */
+        }
+        @media screen and (max-width: 600px) {
+            h1 {
+                margin-top: 0.1em;
+            }
+        }
+        h2 {
+            margin-bottom: 0.01em;
+            margin-top: 0.01em;
+        }
+        h3 {
+            margin-bottom: 0.01em;
+            margin-top: 0.01em;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script>
+        
+    function handleFileSelect(event) {
+    var file = event.target.files[0];
+    var allowedExtensions = /(\.pdf|\.txt|\.jpg|\.jpeg|\.png|\.doc|\.docx|\.xls|\.xlsx|\.ppt|\.pptx)$/i;
+    var maxFileSize = 20 * 1024 * 1024; // 20MB
+
+    if (!allowedExtensions.exec(file.name)) {
+        alert('仅支持上传后缀为 .pdf, .txt, .jpg, .jpeg, .png, .doc, .docx, .xls, .xlsx, .ppt, .pptx 的文件');
+        event.target.value = '';
+        return false;
+    }
+
+    if (file.name.split('.').length - 1 > 1) {
+        alert('文件名中不应包含多个"."');
+        event.target.value = '';
+        return false;
+    }
+
+    var fileSize = file.size;
+    if (fileSize > maxFileSize) {
+        alert('文件大小不能超过 20MB');
+        event.target.value = '';
+        return false;
+    }
+}
+
+function uploadFile() {
+    var fileInput = document.getElementById('fileInput2'); // 修改这里的id为fileInput2
+    var file = fileInput.files[0];
+
+    if (!file) {
+        alert('请先选择文件');
+        return false;
+    }
+
+    // 执行上传
+    var formData = new FormData();
+    formData.append('file', file);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'upload2.php', true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log(xhr.responseText);
+            if (xhr.responseText.includes('成功')) {
+                alert('文件上传成功，当日凌晨4点前有效');
+            } else {
+                alert('文件上传失败');
+            }
+            window.location.reload(); // 刷新页面
+        }
+    };
+    xhr.send(formData);
+}
+function validateFileAndUpload() {
+var fileInput = document.getElementById('fileInput');
+var fileName = fileInput.value.trim().replace(/\s/g, ''); // 删除空格
+var allowedExtensions = /(.pdf|.jpg|.jpeg|.png)$/i;
+var maxFileSize = 10 * 1024 * 1024; // 10MB
+
+    if (!allowedExtensions.exec(fileName)) {
+        alert('仅支持上传后缀为.pdf .jpg .jpeg .png的文件');
+        fileInput.value = '';
+        return false;
+    }
+
+    if (fileName.split('.').length - 1 > 1) {
+        alert('文件名中不应包含多个"."');
+        fileInput.value = '';
+        return false;
+    }
+
+    var fileSize = fileInput.files[0].size;
+    if (fileSize > maxFileSize) {
+        alert('文件大小不能超过10MB');
+        fileInput.value = '';
+        return false;
+    }
+
+    // 文件验证通过，执行上传
+    var formData = new FormData();
+    formData.append('file', fileInput.files[0], fileName); // 传入处理后的文件名
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'upload.php', true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log(xhr.responseText);
+        }
+    };
+    xhr.send(formData);
+
+    // 读取并解析PDF文件，获取页数
+    var file = fileInput.files[0];
+    if (file.type === 'application/pdf') {
+        var fileReader = new FileReader();
+        fileReader.onload = function() {
+            var typedarray = new Uint8Array(this.result);
+            displayPageCount(typedarray);
+        };
+        fileReader.readAsArrayBuffer(file);
+    }
+
+    // 提示用户只有一分钟用于打印
+    alert('您上传的文件将在一分钟后自动删除，请及时打印！');
+
+    // 设置定时器，在一分钟后自动删除文件
+    setTimeout(function() {
+        var fileInput = document.getElementById('fileInput');
+        var filename = fileInput.files[0].name;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'delete.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log('文件删除成功');
+                } else {
+                    console.log('文件删除失败');
+                }
+                alert('文件已失效，无法继续打印！');
+                window.location.reload(); // 刷新页面
+            }
+        };
+        xhr.send('filename=' + encodeURIComponent(filename)); // 发送文件名
+    }, 60000); // 一分钟后执行删除操作
+}
+
+
+    function printFile() {
+    var filename = document.getElementById('fileInput').files[0].name;
+    var encodedFilename = encodeURIComponent(filename); // 对文件名进行编码
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'print.php', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                alert(xhr.responseText); // 显示打印结果
+                markFileAsPrinted(filename); // 文件打印后立即删除
+                window.location.reload(); // 刷新页面
+            } else {
+                alert('打印请求出错，确保内容并重新上传。');
+                window.location.reload(); // 刷新页面
+            }
+        }
+    };
+    xhr.send('filename=' + encodedFilename); // 发送编码后的文件名
+}
+
+    function markFileAsPrinted(filename) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'delete.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.send('filename=' + encodeURIComponent(filename) + '&printed=true'); // 发送文件名和打印标记
+    }
+
+       // 在页面加载完成后立即执行的函数
+window.onload = function() {
+    clearUploadDirectory(); // 页面加载后清空上传目录内文件
+    checkAndDeleteFile(); // 页面加载后检查文件并执行删除操作
+};
+
+function clearUploadDirectory() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'clearUploadDirectory.php', true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log('上传目录内文件已清空');
+        } else {
+            console.log('清空上传目录内文件失败');
+        }
+    };
+    xhr.send();
+}
+
+    </script>
+</head>
+<body>
+    <h1>自助打印</h1>
+    <h3>支持PDF与图片单面黑白打印</h3>
+    <div>
+    <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput" onchange="validateFileAndUpload()">
+    </form>
+    <button onclick="printFile()">开始打印</button>
+    </div>
+    <div class="qr-code-container"> 
+    <img class="qr-code" src="a.jpg" alt="QR Code A">
+        <p>←微信收款 支付宝收款→<br><br>网上下载保存的加密图片需自行解密，例如重复截图<br>如果需要双面或者其它类型文件打印<br>请自行在下方上传，并联系人工</p>
+     <img class="qr-code" src="b.jpg" alt="QR Code B">
+     </div>
+     <h2>文件自助上传</h2>
+            <div>
+                <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" id="fileInput2" onchange="handleFileSelect(event)">
+                </form>
+                <button type="button" onclick="uploadFile()">确定上传</button>
+            </div>
+    <div id="pageCountDisplay" style="display: none;"></div>
+    <h4>QAQ，求求各位大佬赏口饭吃</h4>
+    <footer>
+        <p>Copyright © 2023 <a href="https://www.kumakaiha.com" target="_blank">KUMAKAIHA</a>&<a href="http://printer.kumakaiha.com:3000" target="_blank">ChatGPT</a></p>
+    </footer>
+</body>
+</html>
