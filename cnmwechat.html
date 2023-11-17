@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>垃圾微信</title>
+  <style>
+    /* 将内容居中显示 */
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .button {
+        padding: 25px 50px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 13px;
+        font-size: 40px;
+        margin-top: 25px;
+    }
+    .button:hover {
+        background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>垃圾微信</h1>
+  <h2>傻逼微信不支持链接唤起APP付款</h2>
+  <button id="return-btn" class="button">返回</button>
+
+  <script>
+    // 添加按钮点击事件处理程序
+    document.getElementById("return-btn").addEventListener("click", function() {
+      // 关闭当前页面
+      window.close();
+    });
+  </script>
+</body>
+</html>
