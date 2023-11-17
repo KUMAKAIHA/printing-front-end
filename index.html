@@ -4,78 +4,316 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>自助打印</title>
-    <style>
-        body {
-            display: flex;
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        text-align: center;
+        background-color: #f2f2f2;
+    }
+    .container {
+        max-width: 600px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.5s ease;
+        position: relative;
+    }
+    .container.flip {
+        transform: rotateY(180deg) scaleX(-1);
+    }
+   .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+    }
+    .button-wrapper {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .payment-images {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        margin-top: 20px;
+    }
+
+    .payment-image {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .payment-image img {
+        width: 200px;
+        height: auto;
+        margin-right: 50px;
+        margin-left: 50px;
+    }
+
+    .payment-image p {
+        margin-top: 10px;
+    }
+
+    .button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    .button:hover {
+        background-color: #0056b3;
+    }
+    footer {
+        padding: 10px;
+        text-align: center;
+        margin-top: 100px;
+    }
+    footer p {
+        font-size: 13px;
+    }
+    footer a {
+        text-decoration: none;
+        color: #333;
+    }
+    footer a:hover {
+        text-decoration: underline;
+    }
+    h1 {
+        margin-top: 0.1em;
+        margin-bottom: 1em;
+    }
+    h2 {
+        margin-bottom: 0.01em;
+        margin-top: 1em;
+    }
+    h3 {
+        margin-bottom: 0.01em;
+        margin-top: 1em;
+    }
+    .button-style {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+    .button-style:hover {
+        background-color: #0056b3;
+    }
+    .dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 10px; /* 添加圆角 */
+        z-index: 9999;
+    }
+
+    /* 修改的样式 */
+    #closeHelpButton,
+    #closePaymentButton {
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    #helpButton,
+    #paymentButton {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-top: 10px;
+        display: block;
+        position: absolute; /* 设置按钮的位置为绝对定位 */
+    }
+
+    #helpButton {
+    margin-right: 270px;/* 设置帮助按钮的右侧间距为270px */
+    }
+    
+    #paymentButton {
+    margin-left: 270px;;/* 设置付款按钮的左侧间距为270px */
+    }
+
+    #helpButton:hover,
+    #paymentButton:hover， 
+    #closeHelpButton:hover,
+    #closePaymentButton:hover  {
+        background-color: #0056b3;
+    }
+    @media only screen and (max-width: 500px) {
+        /* iPhone 12 Pro Max */
+        .container {
+            max-width: 400px; /* 修改最大宽度为375px */
+            padding: 10px; /* 修改内边距为10px */
+        }
+        .button-container {
+            margin-top: 5px; /* 修改顶部间距为10px */
+        }
+        .payment-images {
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
+            margin-top: 10px; /* 修改顶部间距为10px */
         }
-        form {
-            margin-top: 20px;
+        .payment-image {
+            margin-bottom: 5px; /* 修改底部间距为5px */
         }
-        input[type="file"] {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            margin-bottom: 20px;
+        .payment-image img {
+            width: 200px; /* 修改图片宽度为120px */
         }
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
+        .button-style {
+            margin-top: 30px; /* 修改顶部间距为30px */
+            width: 360px;
         }
-        button:hover {
-            background-color: #0056b3;
+        #helpButton,
+        #paymentButton {
+        position: relative; /* 修改按钮的定位为相对定位 */
+        margin: 10px auto; /* 居中对齐按钮 */
+        display: block; /* 设置按钮为块级元素 */
         }
-        .qr-code-container {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            }
-        .qr-code {
-            width: 150px;
-            height: 150px;
-            margin-top: 10px;
-            }
-        footer {
-            padding: 10px;
-            text-align: center;
+        #helpButton {
+            margin-right: 100px;/* 设置帮助按钮的右侧间距为270px */
         }
-        footer p {
-            font-size: 13px; /* 修改字体大小 */
+    
+        #paymentButton {
+            margin-left: 100px;;/* 设置付款按钮的左侧间距为270px */
         }
-        footer a {
-            text-decoration: none; /* 去掉下划线 */
-            color: #333; /* 设置链接颜色 */
-        }
-        
-        footer a:hover {
-            text-decoration: underline; /* 鼠标悬停时显示下划线 */
-        }
-        @media screen and (max-width: 600px) {
-            h1 {
-                margin-top: 0.1em;
-            }
-        }
-        h2 {
-            margin-bottom: 0.01em;
-            margin-top: 0.01em;
-        }
-        h3 {
-            margin-bottom: 0.01em;
-            margin-top: 0.01em;
-        }
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    }
+</style>
+</head>
+<body>
+    <h1>CUPS自助打印前端</h1>
+    <div class="container">
+        <div id="functionArea">
+            <button class="button" onclick="togglePrintingOptions()">点击进入文件上传</button>
+            <div id="printingOptions">
+                <h2>PDF自助打印页面</h2>
+                <h3>example元/面<br>仅支持PDF单面黑白打印</h3>
+                <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" id="fileInput" onchange="validateFileAndUpload()" class="button-style">
+                </form>
+                <button class="button" onclick="printFile()">开始打印</button>
+            </div>
+        </div>
+        <div id="fileUploadArea" style="display: none;">
+            <h2>文件自助上传页面</h2>
+            <h3>该页面仅可上传<br>支持多种文档格式</h3>
+            <form id="uploadForm2" action="" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" id="fileInput2" onchange="handleFileSelect(event)" class="button-style">
+            </form>
+            <button class="button" onclick="uploadFile()">确定上传</button>
+        </div>
+    </div>
+    <div>
+        <h4>QAQ，求求各位大佬赏口饭吃</h4>
+        <div class="button-container">
+            <button id="helpButton">用户帮助</button>
+            <button id="paymentButton">付款方式</button>
+        </div>
+        <div id="helpDialog" class="dialog">
+            <h3>用户须知</h3>
+            <p>打印页面会自动上传文件<br>点击确认打印即可自动打印<br>打印后请获取文件<br><br>如果需要双面或者其它类型文件打印<br>请跳转到上传页面上传，并联系人工<br><br>Time to Time无人工</p>
+            <button id="closeHelpButton">我已了解</button>
+        </div>
+        <div id="paymentDialog" class="dialog">
+            <h3>扫码付款</h3>
+            <p>支付宝可手机免扫描<br>直接点击唤起</p>
+            <div class="payment-images">
+                <div class="payment-image">
+                    <a href="http://example/printer/cnmwechat.html" target="_blank">
+                        <img src="a.jpg" alt="微信支付">
+                    </a>
+                    <p>微信支付</p>
+                </div>
+                <div class="payment-image">
+                    <a href="https://qr.alipay.com/example">
+                        <img src="b.jpg" alt="支付宝支付">
+                    </a>
+                    <p>支付宝支付</p>
+                </div>
+            </div>
+            <button id="closePaymentButton">退出</button>
+        </div>
+    </div>
+    <footer>
+        <p>Copyright &copy; Year <a href="https://www.example.com" target="_blank">Maker</a> &amp; <a href="https://chat.openai.com/" target="_blank">ChatGPT 3.5</a></p>
+    </footer>
     <script>
+        function togglePrintingOptions() {
+            var printingOptions = document.getElementById("printingOptions");
+            var fileUploadArea = document.getElementById("fileUploadArea");
+            var button = document.querySelector("#functionArea button");
+            var container = document.querySelector('.container');
+            container.classList.toggle('flip');
+            
+            if (printingOptions.style.display === "none") {
+                printingOptions.style.display = "block";
+                fileUploadArea.style.display = "none";
+                button.innerHTML = "点击进入文件上传";
+            } else {
+                printingOptions.style.display = "none";
+                fileUploadArea.style.display = "block";
+                button.innerHTML = "点击进入PDF自助打印";
+            }
+        }
+
+// JavaScript代码用于处理按钮点击事件和对话框显示/隐藏
+    var helpButton = document.getElementById("helpButton");
+    var helpDialog = document.getElementById("helpDialog");
+    var closeHelpButton = document.getElementById("closeHelpButton");
+
+    helpButton.addEventListener("click", function() {
+      <!--helpButton.style.display = "none";-->
+      helpDialog.style.display = "block";
+    });
+
+    closeHelpButton.addEventListener("click", function() {
+      <!--helpButton.style.display = "block";-->
+      helpDialog.style.display = "none";
+    });
+
+    var paymentButton = document.getElementById("paymentButton");
+    var paymentDialog = document.getElementById("paymentDialog");
+    var closePaymentButton = document.getElementById("closePaymentButton");
+
+    paymentButton.addEventListener("click", function() {
+      paymentDialog.style.display = "block";
+    });
+
+    closePaymentButton.addEventListener("click", function() {
+      paymentDialog.style.display = "none";
+    });
+    
+    
         
     function handleFileSelect(event) {
     var file = event.target.files[0];
@@ -121,36 +359,30 @@ function uploadFile() {
         if (xhr.status === 200) {
             console.log(xhr.responseText);
             if (xhr.responseText.includes('成功')) {
-                alert('文件上传成功，当日凌晨4点前有效');
+                alert('文件上传成功');
             } else {
                 alert('文件上传失败');
             }
-            window.location.reload(); // 刷新页面
+            //window.location.reload(); // 刷新页面
         }
     };
     xhr.send(formData);
 }
 function validateFileAndUpload() {
-var fileInput = document.getElementById('fileInput');
-var fileName = fileInput.value.trim().replace(/\s/g, ''); // 删除空格
-var allowedExtensions = /(.pdf|.jpg|.jpeg|.png)$/i;
-var maxFileSize = 10 * 1024 * 1024; // 10MB
+    var fileInput = document.getElementById('fileInput');
+    var fileName = fileInput.value.trim().replace(/\s/g, ''); // 删除空格
+    var allowedExtensions = /(.pdf)$/i;
+    var maxFileSize = 10 * 1024 * 1024; // 10MB
 
     if (!allowedExtensions.exec(fileName)) {
-        alert('仅支持上传后缀为.pdf .jpg .jpeg .png的文件');
-        fileInput.value = '';
-        return false;
-    }
-
-    if (fileName.split('.').length - 1 > 1) {
-        alert('文件名中不应包含多个"."');
+        alert('仅支持上传后缀为 .pdf 的文件');
         fileInput.value = '';
         return false;
     }
 
     var fileSize = fileInput.files[0].size;
     if (fileSize > maxFileSize) {
-        alert('文件大小不能超过10MB');
+        alert('文件大小不能超过 10MB');
         fileInput.value = '';
         return false;
     }
@@ -205,6 +437,7 @@ var maxFileSize = 10 * 1024 * 1024; // 10MB
 }
 
 
+
     function printFile() {
     var filename = document.getElementById('fileInput').files[0].name;
     var encodedFilename = encodeURIComponent(filename); // 对文件名进行编码
@@ -236,7 +469,6 @@ var maxFileSize = 10 * 1024 * 1024; // 10MB
        // 在页面加载完成后立即执行的函数
 window.onload = function() {
     clearUploadDirectory(); // 页面加载后清空上传目录内文件
-    checkAndDeleteFile(); // 页面加载后检查文件并执行删除操作
 };
 
 function clearUploadDirectory() {
@@ -251,34 +483,6 @@ function clearUploadDirectory() {
     };
     xhr.send();
 }
-
     </script>
-</head>
-<body>
-    <h1>自助打印</h1>
-    <h3>支持PDF与图片单面黑白打印</h3>
-    <div>
-    <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" id="fileInput" onchange="validateFileAndUpload()">
-    </form>
-    <button onclick="printFile()">开始打印</button>
-    </div>
-    <div class="qr-code-container"> 
-    <img class="qr-code" src="a.jpg" alt="QR Code A">
-        <p>←微信收款 支付宝收款→<br><br>网上下载保存的加密图片需自行解密，例如重复截图<br>如果需要双面或者其它类型文件打印<br>请自行在下方上传，并联系人工</p>
-     <img class="qr-code" src="b.jpg" alt="QR Code B">
-     </div>
-     <h2>文件自助上传</h2>
-            <div>
-                <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" id="fileInput2" onchange="handleFileSelect(event)">
-                </form>
-                <button type="button" onclick="uploadFile()">确定上传</button>
-            </div>
-    <div id="pageCountDisplay" style="display: none;"></div>
-    <h4>QAQ，求求各位大佬赏口饭吃</h4>
-    <footer>
-        <p>Copyright © 2023 <a href="https://www.kumakaiha.com" target="_blank">KUMAKAIHA</a>&<a href="http://printer.kumakaiha.com:3000" target="_blank">ChatGPT</a></p>
-    </footer>
-</body>
-</html>
+    </body> 
+</html> 
