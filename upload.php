@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     $uploadFile = $uploadDir . basename($fileName);
 
     // 允许的文件类型
-    $allowedExtensions = array('pdf', 'jpg', 'jpeg', 'png');
+    $allowedExtensions = array('pdf');
     $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
 
     // 允许的文件大小（以字节为单位）
@@ -29,18 +29,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     }
 
     if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
-        echo "仅支持上传后缀为 .pdf, .txt, .jpg, .jpeg, .png 的文件。";
+        echo "仅支持上传后缀为 .pdf 的文件。";
     } elseif ($_FILES['file']['size'] > $allowedFileSize) {
         echo "文件大小超出限制。请上传不超过 10MB 的文件。";
-    } elseif (strpos($fileHeader, 'image') !== false || strpos($fileHeader, 'pdf') !== false) {
-        // 文件头包含'image'或'pdf'时才允许上传
+    } elseif (strpos($fileHeader, 'pdf') === false) {
+        echo "文件格式不支持。请上传 PDF 文件。";
+    } else {
+        // 文件验证通过，执行上传
         if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadFile)) {
             echo "文件上传成功。";
         } else {
             echo "文件上传失败。";
         }
-    } else {
-        echo "文件格式不支持。请上传图片或 PDF 文件。";
     }
 }
 ?>
