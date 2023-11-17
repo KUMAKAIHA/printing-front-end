@@ -47,8 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
         'application/vnd.openxmlformats-officedocument.presentationml.presentation'
     ))) {
         echo "仅支持上传 .pdf, .txt, .jpg, .jpeg, .png, .doc, .docx, .xls, .xlsx, .ppt, .pptx 格式的文件。";
+    } elseif (file_exists($uploadFile) && !is_writable($uploadFile)) {
+        echo "目标文件已存在且不可写。";
     } elseif (move_uploaded_file($_FILES['file']['tmp_name'], $uploadFile)) {
-        chmod($uploadFile, 0444); // 设置上传的文件为只读权限
+        chmod($uploadFile, 0666); // 设置上传的文件为可读可写但不可执行权限
         echo "文件上传成功。";
     } else {
         echo "文件上传失败。";
