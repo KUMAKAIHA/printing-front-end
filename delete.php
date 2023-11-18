@@ -13,14 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filename'])) {
                 echo '文件删除失败';
             }
         } else {
-            if (time() - filemtime($filePath) >= 60) {
+            if (time() - filemtime($filePath) >= 120) {
                 if (unlink($filePath)) {
                     echo '文件删除成功';
                 } else {
                     echo '文件删除失败';
                 }
             } else {
-                echo '文件将在一分钟后自动删除';
+                echo '文件将在两分钟后自动删除';
             }
         }
     } else {
