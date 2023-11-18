@@ -7,6 +7,10 @@ A network self-service printing front-end based on CUPS command line, providing 
 
 Has certain functions to prevent file upload vulnerabilities
 
+美观的前端
+
+Beautiful front-end
+
 可使用a.jpg与b.jpg进行二维码收款
 
 Can use a.jpg and b. jpg for QR code payment
@@ -15,11 +19,13 @@ Can use a.jpg and b. jpg for QR code payment
 
 Automatically delete temporary files that have been printed or have not been printed
 
+具备PDF预览功能
+
+Equipped with PDF preview function
 
 你需要修改上传目录，默认为/home/ubuntu/downloads
 
 You need to modify the upload directory, which defaults to/home/ubuntu/downloads
-
 
 环境基于神雕的海纳思系统
 
