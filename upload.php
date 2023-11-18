@@ -38,6 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
         // 文件验证通过，执行上传
         if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadFile)) {
             echo "文件上传成功。";
+
+            // 启动后台任务，在两分钟后删除文件
+            $cmd = 'sleep 120 && rm ' . $uploadFile . ' &';
+            exec($cmd);
         } else {
             echo "文件上传失败。";
         }
