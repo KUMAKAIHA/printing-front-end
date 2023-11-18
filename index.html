@@ -70,7 +70,7 @@
         color: #fff;
         border: none;
         cursor: pointer;
-        border-radius: 5px;
+        border-radius: 10px;
         font-size: 16px;
         margin-top: 10px;
     }
@@ -110,7 +110,7 @@
         color: #fff;
         border: none;
         cursor: pointer;
-        border-radius: 5px;
+        border-radius: 10px;
         font-size: 16px;
         margin-bottom: 10px;
         margin-top: 10px;
@@ -139,7 +139,7 @@
         color: #fff;
         border: none;
         cursor: pointer;
-        border-radius: 5px;
+        border-radius: 10px;
         font-size: 16px;
         margin-top: 10px;
     }
@@ -150,7 +150,7 @@
         color: #fff;
         border: none;
         cursor: pointer;
-        border-radius: 5px;
+        border-radius: 10px;
         font-size: 16px;
         margin-top: 10px;
         display: block;
@@ -158,11 +158,11 @@
     }
 
     #helpButton {
-    margin-right: 270px;/* 设置帮助按钮的右侧间距为270px */
+    margin-right: 330px;/* 设置帮助按钮的右侧间距为270px */
     }
     
     #paymentButton {
-    margin-left: 270px;;/* 设置付款按钮的左侧间距为270px */
+    margin-left: 330px;;/* 设置付款按钮的左侧间距为270px */
     }
 
     #helpButton:hover,
@@ -171,14 +171,26 @@
     #closePaymentButton:hover  {
         background-color: #0056b3;
     }
+    input#fileInput::file-selector-button {
+        padding: 5px 10px;
+        background-color: #1a8cff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
     @media only screen and (max-width: 500px) {
-        /* iPhone 12 Pro Max */
+        /* iPhone 11 Pro Max */
         .container {
             max-width: 400px; /* 修改最大宽度为375px */
-            padding: 10px; /* 修改内边距为10px */
+            padding: 35px; /* 修改内边距为10px */
+            border-radius: 50px;
         }
         .button-container {
             margin-top: 5px; /* 修改顶部间距为10px */
+        }
+        .button {
+            border-radius: 15px;
         }
         .payment-images {
             flex-direction: column;
@@ -192,7 +204,8 @@
         }
         .button-style {
             margin-top: 30px; /* 修改顶部间距为30px */
-            width: 360px;
+            width: 300px;
+            border-radius: 20px;
         }
         #helpButton,
         #paymentButton {
@@ -202,10 +215,27 @@
         }
         #helpButton {
             margin-right: 100px;/* 设置帮助按钮的右侧间距为270px */
+            border-radius: 15px;
         }
     
         #paymentButton {
             margin-left: 100px;;/* 设置付款按钮的左侧间距为270px */
+            border-radius: 15px;
+        }
+        #closeHelpButton,
+        #closePaymentButton {
+        font-size: 25px;
+        }
+        .dialog {
+            min-width: 300px;
+        }
+        input#fileInput::file-selector-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
         }
     }
 </style>
@@ -221,6 +251,11 @@
                 <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
                     <input type="file" name="file" id="fileInput" onchange="validateFileAndUpload()" class="button-style">
                 </form>
+                <!-- 预览对话框 -->
+                <div id="previewDialog" style="display: none;" class="dialog">
+                    <iframe id="pdfPreview" width="100%" height="500px" zoom="30"></iframe>
+                    <button id="closePreviewButton" class="button">关闭预览</button>
+                </div>
                 <button class="button" onclick="printFile()">开始打印</button>
             </div>
         </div>
@@ -241,7 +276,7 @@
         </div>
         <div id="helpDialog" class="dialog">
             <h3>用户须知</h3>
-            <p>打印页面会自动上传文件<br>点击确认打印即可自动打印<br>打印后请获取文件<br><br>如果需要双面或者其它类型文件打印<br>请跳转到上传页面上传，并联系人工<br><br>Time to Time无人工</p>
+            <p>打印页面会自动上传文件<br>点击确认打印即可自动打印<br>打印后请获取文件<br><br>如果需要双面或者其它类型文件打印<br>请跳转到上传页面上传，并联系人工<br>QQ号：example<br>微信号：example<br><br>Time to Time无人工</p>
             <button id="closeHelpButton">我已了解</button>
         </div>
         <div id="paymentDialog" class="dialog">
@@ -249,13 +284,13 @@
             <p>支付宝可手机免扫描<br>直接点击唤起</p>
             <div class="payment-images">
                 <div class="payment-image">
-                    <a href="http://example/printer/cnmwechat.html" target="_blank">
+                    <a href="http://www.example.com/printer/cnmwechat.html" target="_blank">
                         <img src="a.jpg" alt="微信支付">
                     </a>
                     <p>微信支付</p>
                 </div>
                 <div class="payment-image">
-                    <a href="https://qr.alipay.com/example">
+                    <a href="https://qr.alipay.com/example" target="_blank">
                         <img src="b.jpg" alt="支付宝支付">
                     </a>
                     <p>支付宝支付</p>
@@ -265,7 +300,7 @@
         </div>
     </div>
     <footer>
-        <p>Copyright &copy; Year <a href="https://www.example.com" target="_blank">Maker</a> &amp; <a href="https://chat.openai.com/" target="_blank">ChatGPT 3.5</a></p>
+        <p>Copyright &copy; Year <a href="https://www.example.com" target="_blank">Maker</a> &amp; <a href="https://chat.openai.com/" target="_blank">ChatGPT</a></p>
     </footer>
     <script>
         function togglePrintingOptions() {
@@ -286,201 +321,210 @@
             }
         }
 
-// JavaScript代码用于处理按钮点击事件和对话框显示/隐藏
-    var helpButton = document.getElementById("helpButton");
-    var helpDialog = document.getElementById("helpDialog");
-    var closeHelpButton = document.getElementById("closeHelpButton");
+        var helpButton = document.getElementById("helpButton");
+        var helpDialog = document.getElementById("helpDialog");
+        var closeHelpButton = document.getElementById("closeHelpButton");
 
-    helpButton.addEventListener("click", function() {
-      helpDialog.style.display = "block";
-    });
+        helpButton.addEventListener("click", function() {
+            helpDialog.style.display = "block";
+        });
 
-    closeHelpButton.addEventListener("click", function() {
-      helpDialog.style.display = "none";
-    });
+        closeHelpButton.addEventListener("click", function() {
+            helpDialog.style.display = "none";
+        });
 
-    var paymentButton = document.getElementById("paymentButton");
-    var paymentDialog = document.getElementById("paymentDialog");
-    var closePaymentButton = document.getElementById("closePaymentButton");
+        var paymentButton = document.getElementById("paymentButton");
+        var paymentDialog = document.getElementById("paymentDialog");
+        var closePaymentButton = document.getElementById("closePaymentButton");
 
-    paymentButton.addEventListener("click", function() {
-      paymentDialog.style.display = "block";
-    });
+        paymentButton.addEventListener("click", function() {
+            paymentDialog.style.display = "block";
+        });
 
-    closePaymentButton.addEventListener("click", function() {
-      paymentDialog.style.display = "none";
-    });
+        closePaymentButton.addEventListener("click", function() {
+            paymentDialog.style.display = "none";
+        });
     
     
         
-    function handleFileSelect(event) {
-    var file = event.target.files[0];
-    var allowedExtensions = /(\.pdf|\.txt|\.jpg|\.jpeg|\.png|\.doc|\.docx|\.xls|\.xlsx|\.ppt|\.pptx)$/i;
-    var maxFileSize = 20 * 1024 * 1024; // 20MB
+        function handleFileSelect(event) {
+            var file = event.target.files[0];
+            var allowedExtensions = /(\.pdf|\.txt|\.jpg|\.jpeg|\.png|\.doc|\.docx|\.xls|\.xlsx|\.ppt|\.pptx)$/i;
+            var maxFileSize = 20 * 1024 * 1024; // 20MB
 
-    if (!allowedExtensions.exec(file.name)) {
-        alert('仅支持上传后缀为 .pdf, .txt, .jpg, .jpeg, .png, .doc, .docx, .xls, .xlsx, .ppt, .pptx 的文件');
-        event.target.value = '';
-        return false;
-    }
-
-    if (file.name.split('.').length - 1 > 1) {
-        alert('文件名中不应包含多个"."');
-        event.target.value = '';
-        return false;
-    }
-
-    var fileSize = file.size;
-    if (fileSize > maxFileSize) {
-        alert('文件大小不能超过 20MB');
-        event.target.value = '';
-        return false;
-    }
-}
-
-function uploadFile() {
-    var fileInput = document.getElementById('fileInput2'); // 修改这里的id为fileInput2
-    var file = fileInput.files[0];
-
-    if (!file) {
-        alert('请先选择文件');
-        return false;
-    }
-
-    // 执行上传
-    var formData = new FormData();
-    formData.append('file', file);
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'upload2.php', true);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            console.log(xhr.responseText);
-            if (xhr.responseText.includes('成功')) {
-                alert('文件上传成功');
-            } else {
-                alert('文件上传失败');
+            if (!allowedExtensions.exec(file.name)) {
+                alert('仅支持上传后缀为 .pdf, .txt, .jpg, .jpeg, .png, .doc, .docx, .xls, .xlsx, .ppt, .pptx 的文件');
+                event.target.value = '';
+                return false;
             }
-            //window.location.reload(); // 刷新页面
+
+            if (file.name.split('.').length - 1 > 1) {
+                alert('文件名中不应包含多个"."');
+                event.target.value = '';
+                return false;
+            }
+
+            var fileSize = file.size;
+            if (fileSize > maxFileSize) {
+                alert('文件大小不能超过 20MB');
+                event.target.value = '';
+                return false;
+            }
         }
-    };
-    xhr.send(formData);
-}
-function validateFileAndUpload() {
-    var fileInput = document.getElementById('fileInput');
-    var fileName = fileInput.value.trim().replace(/\s/g, ''); // 删除空格
-    var allowedExtensions = /(.pdf)$/i;
-    var maxFileSize = 10 * 1024 * 1024; // 10MB
 
-    if (!allowedExtensions.exec(fileName)) {
-        alert('仅支持上传后缀为 .pdf 的文件');
-        fileInput.value = '';
-        return false;
-    }
+        function uploadFile() {
+            var fileInput = document.getElementById('fileInput2'); // 修改这里的id为fileInput2
+            var file = fileInput.files[0];
 
-    var fileSize = fileInput.files[0].size;
-    if (fileSize > maxFileSize) {
-        alert('文件大小不能超过 10MB');
-        fileInput.value = '';
-        return false;
-    }
+            if (!file) {
+                alert('请先选择文件');
+                return false;
+            }
 
-    // 文件验证通过，执行上传
-    var formData = new FormData();
-    formData.append('file', fileInput.files[0], fileName); // 传入处理后的文件名
+            // 执行上传
+            var formData = new FormData();
+            formData.append('file', file);
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'upload.php', true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            console.log(xhr.responseText);
-        }
-    };
-    xhr.send(formData);
-
-    // 读取并解析PDF文件，获取页数
-    var file = fileInput.files[0];
-    if (file.type === 'application/pdf') {
-        var fileReader = new FileReader();
-        fileReader.onload = function() {
-            var typedarray = new Uint8Array(this.result);
-            displayPageCount(typedarray);
-        };
-        fileReader.readAsArrayBuffer(file);
-    }
-
-    // 提示用户只有一分钟用于打印
-    alert('您上传的文件将在一分钟后自动删除，请及时打印！');
-
-    // 设置定时器，在一分钟后自动删除文件
-    setTimeout(function() {
-        var fileInput = document.getElementById('fileInput');
-        var filename = fileInput.files[0].name;
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'delete.php', true);
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'upload2.php', true);
+            xhr.onload = function () {
                 if (xhr.status === 200) {
-                    console.log('文件删除成功');
-                } else {
-                    console.log('文件删除失败');
+                    console.log(xhr.responseText);
+                    if (xhr.responseText.includes('成功')) {
+                        alert('文件上传成功');
+                    } else {
+                        alert('文件上传失败');
+                    }
+                    //window.location.reload(); // 刷新页面
                 }
-                alert('文件已失效，无法继续打印！');
-                window.location.reload(); // 刷新页面
+            };
+            xhr.send(formData);
+        }
+        function validateFileAndUpload() {
+            var fileInput = document.getElementById('fileInput');
+            var fileName = fileInput.value.trim().replace(/\s/g, ''); // 删除空格
+            var allowedExtensions = /(.pdf)$/i;
+            var maxFileSize = 10 * 1024 * 1024; // 10MB
+
+            if (!allowedExtensions.exec(fileName)) {
+                alert('仅支持上传后缀为 .pdf 的文件');
+                fileInput.value = '';
+                return false;
             }
+
+            var fileSize = fileInput.files[0].size;
+            if (fileSize > maxFileSize) {
+                alert('文件大小不能超过 10MB');
+                fileInput.value = '';
+                return false;
+            }
+
+            // 文件验证通过，执行上传
+            var formData = new FormData();
+            formData.append('file', fileInput.files[0], fileName); // 传入处理后的文件名
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'upload.php', true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+            xhr.send(formData);
+
+            // 读取并解析PDF文件，获取页数
+            var file = fileInput.files[0];
+            if (file.type === 'application/pdf') {
+                var fileReader = new FileReader();
+                fileReader.onload = function() {
+                    var typedarray = new Uint8Array(this.result);
+                    displayPageCount(typedarray);
+                };
+                fileReader.readAsArrayBuffer(file);
+            }
+
+            // 提示用户只有两分钟用于打印
+            alert('您上传的文件将在两分钟后自动删除，请及时打印！');
+
+            // 设置定时器，在两分钟后自动删除文件
+            setTimeout(function() {
+                var fileInput = document.getElementById('fileInput');
+                var filename = fileInput.files[0].name;
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'delete.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            console.log('文件删除成功');
+                        } else {
+                            console.log('文件删除失败');
+                        }
+                        alert('文件已失效，无法继续打印！');
+                        window.location.reload(); // 刷新页面
+                    }
+                };
+                xhr.send('filename=' + encodeURIComponent(filename)); // 发送文件名
+            }, 120000); // 两分钟后执行删除操作
+            // 预览上传的PDF文件
+                var pdfPreview = document.getElementById('pdfPreview');
+                pdfPreview.src = URL.createObjectURL(file);
+                var previewDialog = document.getElementById('previewDialog');
+                previewDialog.style.display = 'block';
+        }
+
+
+
+        function printFile() {
+            var filename = document.getElementById('fileInput').files[0].name;
+            var encodedFilename = encodeURIComponent(filename); // 对文件名进行编码
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'print.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        alert(xhr.responseText); // 显示打印结果
+                        markFileAsPrinted(filename); // 文件打印后立即删除
+                        window.location.reload(); // 刷新页面
+                    } else {
+                        alert('打印请求出错，确保内容并重新上传。');
+                        window.location.reload(); // 刷新页面
+                    }
+                }
+            };
+            xhr.send('filename=' + encodedFilename); // 发送编码后的文件名
+        }
+
+        function markFileAsPrinted(filename) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'delete.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.send('filename=' + encodeURIComponent(filename) + '&printed=true'); // 发送文件名和打印标记
+        }
+
+        // 在页面加载完成后立即执行的函数
+        window.onload = function() {
+            clearUploadDirectory(); // 页面加载后清空上传目录内文件
         };
-        xhr.send('filename=' + encodeURIComponent(filename)); // 发送文件名
-    }, 60000); // 一分钟后执行删除操作
-}
 
-
-
-    function printFile() {
-    var filename = document.getElementById('fileInput').files[0].name;
-    var encodedFilename = encodeURIComponent(filename); // 对文件名进行编码
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'print.php', true);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                alert(xhr.responseText); // 显示打印结果
-                markFileAsPrinted(filename); // 文件打印后立即删除
-                window.location.reload(); // 刷新页面
-            } else {
-                alert('打印请求出错，确保内容并重新上传。');
-                window.location.reload(); // 刷新页面
-            }
+        function clearUploadDirectory() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'clearUploadDirectory.php', true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    console.log('上传目录内文件已清空');
+                } else {
+                    console.log('清空上传目录内文件失败');
+                }
+            };
+            xhr.send();
         }
-    };
-    xhr.send('filename=' + encodedFilename); // 发送编码后的文件名
-}
-
-    function markFileAsPrinted(filename) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'delete.php', true);
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.send('filename=' + encodeURIComponent(filename) + '&printed=true'); // 发送文件名和打印标记
-    }
-
-       // 在页面加载完成后立即执行的函数
-window.onload = function() {
-    clearUploadDirectory(); // 页面加载后清空上传目录内文件
-};
-
-function clearUploadDirectory() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'clearUploadDirectory.php', true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            console.log('上传目录内文件已清空');
-        } else {
-            console.log('清空上传目录内文件失败');
-        }
-    };
-    xhr.send();
-}
+        var closePreviewButton = document.getElementById('closePreviewButton');
+        closePreviewButton.addEventListener('click', function() {
+            var previewDialog = document.getElementById('previewDialog');
+            previewDialog.style.display = 'none';
+        });
     </script>
-    </body> 
+</body> 
 </html> 
