@@ -171,7 +171,8 @@
     #closePaymentButton:hover  {
         background-color: #0056b3;
     }
-    input#fileInput::file-selector-button {
+    input#fileInput::file-selector-button,
+    input#fileInput2::file-selector-button {
         padding: 5px 10px;
         background-color: #1a8cff;
         color: #fff;
@@ -229,7 +230,8 @@
         .dialog {
             min-width: 300px;
         }
-        input#fileInput::file-selector-button {
+        input#fileInput::file-selector-button,
+        input#fileInput2::file-selector-button{
             padding: 10px 20px;
             background-color: #007bff;
             color: #fff;
@@ -247,7 +249,7 @@
             <button class="button" onclick="togglePrintingOptions()">点击进入文件上传</button>
             <div id="printingOptions">
                 <h2>PDF自助打印页面</h2>
-                <h3>example元/面<br>仅支持PDF单面黑白打印</h3>
+                <h3>0.1元/面<br>仅支持PDF单面黑白打印</h3>
                 <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
                     <input type="file" name="file" id="fileInput" onchange="validateFileAndUpload()" class="button-style">
                 </form>
@@ -276,7 +278,7 @@
         </div>
         <div id="helpDialog" class="dialog">
             <h3>用户须知</h3>
-            <p>打印页面会自动上传文件<br>点击确认打印即可自动打印<br>打印后请获取文件<br><br>如果需要双面或者其它类型文件打印<br>请跳转到上传页面上传，并联系人工<br>QQ号：example<br>微信号：example<br><br>Time to Time无人工</p>
+            <p>打印页面会自动上传文件<br>点击确认打印即可自动打印<br>打印后请前往于25-416寝室获取文件<br><br>如果需要双面或者其它类型文件打印<br>请跳转到上传页面上传，并联系人工<br>QQ号：2916886783<br>微信号：KUMAKAIHA<br><br>23:00-9:30无人工</p>
             <button id="closeHelpButton">我已了解</button>
         </div>
         <div id="paymentDialog" class="dialog">
@@ -284,13 +286,13 @@
             <p>支付宝可手机免扫描<br>直接点击唤起</p>
             <div class="payment-images">
                 <div class="payment-image">
-                    <a href="http://www.example.com/printer/cnmwechat.html" target="_blank">
+                    <a href="http://printer.kumakaiha.com/printer/cnmwechat.html" target="_blank">
                         <img src="a.jpg" alt="微信支付">
                     </a>
                     <p>微信支付</p>
                 </div>
                 <div class="payment-image">
-                    <a href="https://qr.alipay.com/example" target="_blank">
+                    <a href="https://qr.alipay.com/fkx14899777tsxih3ux5t7b" target="_blank">
                         <img src="b.jpg" alt="支付宝支付">
                     </a>
                     <p>支付宝支付</p>
@@ -300,7 +302,7 @@
         </div>
     </div>
     <footer>
-        <p>Copyright &copy; Year <a href="https://www.example.com" target="_blank">Maker</a> &amp; <a href="https://chat.openai.com/" target="_blank">ChatGPT</a></p>
+        <p>Copyright &copy; 2023 <a href="https://www.kumakaiha.com" target="_blank">KUMAKAIHA</a> &amp; <a href="http://printer.kumakaiha.com:3000" target="_blank">ChatGPT</a></p>
     </footer>
     <script>
         function togglePrintingOptions() {
@@ -391,11 +393,10 @@
                 if (xhr.status === 200) {
                     console.log(xhr.responseText);
                     if (xhr.responseText.includes('成功')) {
-                        alert('文件上传成功');
+                        alert('文件上传成功，当日凌晨4点前有效');
                     } else {
                         alert('文件上传失败');
                     }
-                    //window.location.reload(); // 刷新页面
                 }
             };
             xhr.send(formData);
@@ -438,7 +439,6 @@
                 var fileReader = new FileReader();
                 fileReader.onload = function() {
                     var typedarray = new Uint8Array(this.result);
-                    displayPageCount(typedarray);
                 };
                 fileReader.readAsArrayBuffer(file);
             }
@@ -446,34 +446,17 @@
             // 提示用户只有两分钟用于打印
             alert('您上传的文件将在两分钟后自动删除，请及时打印！');
 
-            // 设置定时器，在两分钟后自动删除文件
+            // 设置定时器，在两分钟后提示文件已失效
             setTimeout(function() {
-                var fileInput = document.getElementById('fileInput');
-                var filename = fileInput.files[0].name;
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'delete.php', true);
-                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            console.log('文件删除成功');
-                        } else {
-                            console.log('文件删除失败');
-                        }
-                        alert('文件已失效，无法继续打印！');
-                        window.location.reload(); // 刷新页面
-                    }
-                };
-                xhr.send('filename=' + encodeURIComponent(filename)); // 发送文件名
-            }, 120000); // 两分钟后执行删除操作
+                alert('文件已失效，无法继续打印！');
+            }, 120000); // 两分钟后提示文件已失效
+
             // 预览上传的PDF文件
-                var pdfPreview = document.getElementById('pdfPreview');
-                pdfPreview.src = URL.createObjectURL(file);
-                var previewDialog = document.getElementById('previewDialog');
-                previewDialog.style.display = 'block';
+            var pdfPreview = document.getElementById('pdfPreview');
+            pdfPreview.src = URL.createObjectURL(file);
+            var previewDialog = document.getElementById('previewDialog');
+            previewDialog.style.display = 'block';
         }
-
-
 
         function printFile() {
             var filename = document.getElementById('fileInput').files[0].name;
@@ -485,41 +468,15 @@
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         alert(xhr.responseText); // 显示打印结果
-                        markFileAsPrinted(filename); // 文件打印后立即删除
-                        window.location.reload(); // 刷新页面
                     } else {
                         alert('打印请求出错，确保内容并重新上传。');
-                        window.location.reload(); // 刷新页面
                     }
+                    window.location.reload(); // 刷新页面
                 }
             };
             xhr.send('filename=' + encodedFilename); // 发送编码后的文件名
         }
-
-        function markFileAsPrinted(filename) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'delete.php', true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.send('filename=' + encodeURIComponent(filename) + '&printed=true'); // 发送文件名和打印标记
-        }
-
-        // 在页面加载完成后立即执行的函数
-        window.onload = function() {
-            clearUploadDirectory(); // 页面加载后清空上传目录内文件
-        };
-
-        function clearUploadDirectory() {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'clearUploadDirectory.php', true);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    console.log('上传目录内文件已清空');
-                } else {
-                    console.log('清空上传目录内文件失败');
-                }
-            };
-            xhr.send();
-        }
+        
         var closePreviewButton = document.getElementById('closePreviewButton');
         closePreviewButton.addEventListener('click', function() {
             var previewDialog = document.getElementById('previewDialog');
