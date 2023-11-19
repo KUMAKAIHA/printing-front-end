@@ -14,6 +14,7 @@
         margin: 0;
         text-align: center;
         background-color: #f2f2f2;
+        overflow: hidden;
     }
     .container {
         max-width: 600px;
@@ -24,6 +25,22 @@
         transition: transform 0.5s ease;
         position: relative;
     }
+    .containerall {
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
     .container.flip {
         transform: rotateY(180deg) scaleX(-1);
     }
@@ -32,6 +49,7 @@
         justify-content: center;
         align-items: center;
         margin-top: 30px;
+        transition: all 0.3s ease;
     }
     .button-wrapper {
         flex: 1;
@@ -73,6 +91,7 @@
         border-radius: 10px;
         font-size: 16px;
         margin-top: 10px;
+        transition: all 0.3s ease;
     }
     .button:hover {
         background-color: #0056b3;
@@ -80,7 +99,8 @@
     footer {
         padding: 10px;
         text-align: center;
-        margin-top: 100px;
+        margin-top: 50px;
+        margin-bottom: 1em;
     }
     footer p {
         font-size: 13px;
@@ -93,7 +113,7 @@
         text-decoration: underline;
     }
     h1 {
-        margin-top: 0.1em;
+        margin-top: 1em;
         margin-bottom: 1em;
     }
     h2 {
@@ -114,6 +134,7 @@
         font-size: 16px;
         margin-bottom: 10px;
         margin-top: 10px;
+        transition: all 0.3s ease;
     }
     .button-style:hover {
         background-color: #0056b3;
@@ -127,8 +148,9 @@
         padding: 20px;
         background-color: #fff;
         border: 1px solid #ccc;
-        border-radius: 10px; /* 添加圆角 */
+        border-radius: 10px;
         z-index: 9999;
+        transition: opacity 0.3s ease-in-out;
     }
 
     /* 修改的样式 */
@@ -142,6 +164,7 @@
         border-radius: 10px;
         font-size: 16px;
         margin-top: 10px;
+        transition: all 0.3s ease;
     }
     #helpButton,
     #paymentButton {
@@ -154,15 +177,15 @@
         font-size: 16px;
         margin-top: 10px;
         display: block;
-        position: absolute; /* 设置按钮的位置为绝对定位 */
+        transition: all 0.3s ease;
     }
 
     #helpButton {
-    margin-right: 275px;/* 设置帮助按钮的右侧间距为275px */
+    margin-right: 85px;/* 设置帮助按钮的右侧间距为85px */
     }
     
     #paymentButton {
-    margin-left: 275px;;/* 设置付款按钮的左侧间距为275px */
+    margin-left: 85px;/* 设置付款按钮的左侧间距为85px */
     }
 
     #helpButton:hover,
@@ -180,11 +203,164 @@
         cursor: pointer;
         border-radius: 5px;
     }
-    @media only screen and (max-width: 500px) {
-        /* iPhone 11 Pro Max */
+    @media only screen and (max-height: 650px) {
+        
+        /* PC */
+        body {
+            overflow: visible;
+            overflow-x: hidden;
+        }
         .container {
-            max-width: 400px; /* 修改最大宽度为375px */
-            padding: 35px; /* 修改内边距为10px */
+            padding: 10px 35px; /* 修改内边距为35px */
+            border-radius: 50px;
+        }
+        .containerall {
+            border-radius: 50px;
+            position: relative;
+            height: 650px; /* 设置容器的高度，根据需要调整 */
+            width: 1480px;
+        }
+        .button-container {
+            margin-top: 5px; /* 修改顶部间距为10px */
+        }
+        .button {
+            border-radius: 15px;
+        }
+        .payment-images {
+            flex-direction: column;
+            margin-top: 10px; /* 修改顶部间距为10px */
+        }
+        .payment-image {
+            margin-bottom: 5px; /* 修改底部间距为5px */
+        }
+        .payment-image img {
+            width: 200px; /* 修改图片宽度为200px */
+        }
+        .button-style {
+            margin-top: 30px; /* 修改顶部间距为30px */
+            width: 250px;
+            border-radius: 20px;
+        }
+        footer {
+            margin-top: 30px;
+        }
+        #helpButton,
+        #paymentButton {
+            position: relative; /* 修改按钮的定位为相对定位 */
+            margin: 10px auto; /* 居中对齐按钮 */
+            display: block; /* 设置按钮为块级元素 */
+            font-size: 17px;
+        }
+        #helpButton {
+            margin-right: 65px;/* 设置帮助按钮的右侧间距为65px */
+            border-radius: 15px;
+        }
+    
+        #paymentButton {
+            margin-left: 65px;/* 设置付款按钮的左侧间距为65px */
+            border-radius: 15px;
+        }
+        #closeHelpButton,
+        #closePaymentButton {
+            font-size: 25px;
+        }
+        .dialog {
+            min-width: 300px;
+            border-radius: 30px;
+        }
+        input#fileInput::file-selector-button,
+        input#fileInput2::file-selector-button{
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+    }
+    @media only screen and (max-height: 400px) {
+        
+        /* iPhone 12 Pro Max */
+        body {
+            overflow: visible;
+            overflow-x: hidden;
+        }
+        .container {
+            padding: 10px 35px; /* 修改内边距为35px */
+            border-radius: 50px;
+        }
+        .containerall {
+            border-radius: 50px;
+            position: relative;
+            height: 650px; /* 设置容器的高度，根据需要调整 */
+            width: 800px;
+            margin-top: 250px;
+        }
+        .button-container {
+            margin-top: 5px; /* 修改顶部间距为10px */
+        }
+        .button {
+            border-radius: 15px;
+        }
+        .payment-images {
+            flex-direction: column;
+            margin-top: 10px; /* 修改顶部间距为10px */
+        }
+        .payment-image {
+            margin-bottom: 5px; /* 修改底部间距为5px */
+        }
+        .payment-image img {
+            width: 200px; /* 修改图片宽度为200px */
+        }
+        .button-style {
+            margin-top: 30px; /* 修改顶部间距为30px */
+            width: 250px;
+            border-radius: 20px;
+        }
+        footer {
+            margin-top: 30px;
+        }
+        #helpButton,
+        #paymentButton {
+            position: relative; /* 修改按钮的定位为相对定位 */
+            margin: 10px auto; /* 居中对齐按钮 */
+            display: block; /* 设置按钮为块级元素 */
+            font-size: 17px;
+        }
+        #helpButton {
+            margin-right: 65px;/* 设置帮助按钮的右侧间距为65px */
+            border-radius: 15px;
+        }
+    
+        #paymentButton {
+            margin-left: 65px;/* 设置付款按钮的左侧间距为65px */
+            border-radius: 15px;
+        }
+        #closeHelpButton,
+        #closePaymentButton {
+            font-size: 25px;
+        }
+        .dialog {
+            min-width: 300px;
+            border-radius: 30px;
+        }
+        input#fileInput::file-selector-button,
+        input#fileInput2::file-selector-button{
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+    }
+    @media only screen and (max-width: 600px) {
+        /* iPhone 12 Pro Max */
+        .container {
+            padding: 10px 35px; /* 修改内边距为35px */
+            border-radius: 50px;
+        }
+        .containerall {
             border-radius: 50px;
         }
         .button-container {
@@ -201,34 +377,39 @@
             margin-bottom: 5px; /* 修改底部间距为5px */
         }
         .payment-image img {
-            width: 200px; /* 修改图片宽度为120px */
+            width: 200px; /* 修改图片宽度为200px */
         }
         .button-style {
             margin-top: 30px; /* 修改顶部间距为30px */
-            width: 300px;
+            width: 250px;
             border-radius: 20px;
+        }
+        footer {
+            margin-top: 30px;
         }
         #helpButton,
         #paymentButton {
-        position: relative; /* 修改按钮的定位为相对定位 */
-        margin: 10px auto; /* 居中对齐按钮 */
-        display: block; /* 设置按钮为块级元素 */
+            position: relative; /* 修改按钮的定位为相对定位 */
+            margin: 10px auto; /* 居中对齐按钮 */
+            display: block; /* 设置按钮为块级元素 */
+            font-size: 17px;
         }
         #helpButton {
-            margin-right: 100px;/* 设置帮助按钮的右侧间距为270px */
+            margin-right: 65px;/* 设置帮助按钮的右侧间距为65px */
             border-radius: 15px;
         }
     
         #paymentButton {
-            margin-left: 100px;;/* 设置付款按钮的左侧间距为270px */
+            margin-left: 65px;/* 设置付款按钮的左侧间距为65px */
             border-radius: 15px;
         }
         #closeHelpButton,
         #closePaymentButton {
-        font-size: 25px;
+            font-size: 25px;
         }
         .dialog {
             min-width: 300px;
+            border-radius: 30px;
         }
         input#fileInput::file-selector-button,
         input#fileInput2::file-selector-button{
@@ -255,7 +436,7 @@
                 </form>
                 <!-- 预览对话框 -->
                 <div id="previewDialog" style="display: none;" class="dialog">
-                    <iframe id="pdfPreview" width="100%" height="500px" zoom="30"></iframe>
+                    <iframe id="pdfPreview" width="100%" height="500px" zoom="10"></iframe>
                     <button id="closePreviewButton" class="button">关闭预览</button>
                 </div>
                 <button class="button" onclick="printFile()">开始打印</button>
