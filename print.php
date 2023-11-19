@@ -16,7 +16,7 @@ if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
     echo "文件大小超出限制。请打印不超过 10MB 的文件。";
 } else {
     // 执行打印操作
-    exec('lp ' . escapeshellarg($filePath), $output, $return_var); // 使用 escapeshellarg 函数确保文件路径中的特殊字符被正确处理
+    exec('lp -o fit-to-page -o media=A4 ' . escapeshellarg($filePath), $output, $return_var); // 使用 escapeshellarg 函数确保文件路径中的特殊字符被正确处理
 
     // 检查打印命令执行结果
     if ($return_var === 0) {
