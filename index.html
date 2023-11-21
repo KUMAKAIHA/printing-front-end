@@ -496,11 +496,11 @@
             if (printingOptions.style.display === "none") {
                 printingOptions.style.display = "block";
                 fileUploadArea.style.display = "none";
-                button.innerHTML = "点击进入文件上传";
+                button.innerHTML = "仅上传文件点此进入";
             } else {
                 printingOptions.style.display = "none";
                 fileUploadArea.style.display = "block";
-                button.innerHTML = "点击进入PDF自助打印";
+                button.innerHTML = "PDF自助打印点此进入";
             }
         }
 
@@ -574,6 +574,8 @@
                 if (xhr.status === 200) {
                     console.log(xhr.responseText);
                     if (xhr.responseText.includes('成功')) {
+                        var filename = file.name; 
+                        logDeviceInfo2(filename);
                         alert('文件上传成功，当日凌晨4点前有效');
                     } else {
                         alert('文件上传失败');
@@ -582,6 +584,7 @@
             };
             xhr.send(formData);
         }
+        
         function validateFileAndUpload() {
             var fileInput = document.getElementById('fileInput');
             var fileName = fileInput.value.trim().replace(/\s/g, ''); // 删除空格
@@ -630,6 +633,7 @@
             // 设置定时器，在两分钟后提示文件已失效
             setTimeout(function() {
                 alert('文件已失效，无法继续打印！');
+                window.location.reload(); // 刷新页面
             }, 120000); // 两分钟后提示文件已失效
 
             // 预览上传的PDF文件
@@ -648,6 +652,7 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
+                        logDeviceInfo(filename); // 记录设备信息和文件
                         alert(xhr.responseText); // 显示打印结果
                     } else {
                         alert('打印请求出错，确保内容并重新上传。');
@@ -656,6 +661,29 @@
                 }
             };
             xhr.send('filename=' + encodedFilename); // 发送编码后的文件名
+        }
+        
+        function logDeviceInfo(filename) {
+            var userAgent = navigator.userAgent;
+            var deviceInfo = {
+                userAgent: userAgent,
+                filename: filename
+            };
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'printer_log.php', true);
+            xhr.setRequestHeader('Content-type', 'application/json');
+            xhr.send(JSON.stringify(deviceInfo));
+        }
+        function logDeviceInfo2(filename) {
+            var userAgent = navigator.userAgent;
+            var deviceInfo = {
+                userAgent: userAgent,
+                filename: filename
+            };
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'upload_log.php', true);
+            xhr.setRequestHeader('Content-type', 'application/json');
+            xhr.send(JSON.stringify(deviceInfo));
         }
         
         var closePreviewButton = document.getElementById('closePreviewButton');
