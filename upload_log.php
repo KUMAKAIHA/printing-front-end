@@ -55,4 +55,7 @@ $result = file_put_contents($logFilePath, $logLine, FILE_APPEND | LOCK_EX);
 if ($result === false) {
     die('无法写入日志文件。');
 }
+else{
+    die('写入日志文件。');
+}
 ?>
