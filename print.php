@@ -23,9 +23,22 @@ if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
         // 获取PDF文件页数
         if ($fileExtension === 'pdf') {
             $pageCount = exec('pdfinfo ' . escapeshellarg($filePath) . ' | grep "Pages:" | cut -c8-'); // 使用 escapeshellarg 函数确保文件路径中的特殊字符被正确处理
+            // 将页数转换为整数形式
+            $pageCount = intval($pageCount);
+            
             echo "文件已经成功打印并删除，共 " . $pageCount . " 页。";
             echo "打印费用为：" . ($pageCount * 0.1) . "元。"; // 将页数乘以 0.1，显示打印费用
-        } 
+            
+            // 将页数写入pagecache.txt文件
+            $pageCacheFile = '/home/ubuntu/cacheandlog/pagecache.txt';
+            if (!file_exists($pageCacheFile)) {
+                // 创建pagecache.txt文件
+                file_put_contents($pageCacheFile, $pageCount);
+            } else {
+                // 覆盖写入页数
+                file_put_contents($pageCacheFile, $pageCount);
+            }
+        }
         // 打印成功后删除文件
         if (file_exists($filePath)) {
             unlink($filePath); // 删除文件
