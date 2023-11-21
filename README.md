@@ -23,6 +23,14 @@ Automatically delete temporary files that have been printed or have not been pri
 
 Equipped with PDF preview function
 
+具备审计功能
+
+With audit function
+
+现在可以在默认目录/home/ubuntu/cacheandlog文件夹中查询printer_log和upload_log。内容包括序号、时间、用户设备类型、文件名、pdf页面数
+
+You can now query the printer in the default directory/home/ubuntu/cacheandlog folder_ Log and upload_ Log. The content includes serial number, time, user device type, file name, and number of PDF pages
+
 你需要修改上传目录，默认为/home/ubuntu/downloads
 
 You need to modify the upload directory, which defaults to/home/ubuntu/downloads
