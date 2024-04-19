@@ -8,7 +8,7 @@ if (!file_exists($uploadDir)) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     $fileName = $_FILES['file']['name'];
-    $fileName = preg_replace('/[^\p{Han}a-zA-Z0-9_.-]/u', '', $fileName); // 去除文件名中的非法字符并保留中文
+    $fileName = preg_replace('/[^\p{Han}a-zA-Z0-9_.]/u', '', $fileName); // 去除文件名中的非法字符并保留中文
     $uploadFile = $uploadDir . basename($fileName);
 
     // 允许的文件类型
@@ -39,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
         if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadFile)) {
             echo "文件上传成功。";
 
-            // 启动后台任务，在两分钟后删除文件
-            $cmd = 'sleep 120 && rm ' . $uploadFile . ' &';
+            // 使用 at 命令，在五分钟后删除文件
+            $cmd = 'echo "rm -f ' . $uploadFile . '" | sudo at now + 5 minutes';
             exec($cmd);
         } else {
             echo "文件上传失败。";

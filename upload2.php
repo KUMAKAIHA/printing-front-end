@@ -4,7 +4,7 @@ $uploadDir = '/home/ubuntu/downloads/';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     $targetDir = realpath($uploadDir); // 获取目标目录的绝对路径
     $fileName = $_FILES['file']['name'];
-    $cleanFileName = preg_replace("/[^\p{Han}a-zA-Z0-9_.-]/u", "", $fileName); // 删除非法字符
+    $cleanFileName = preg_replace("/[^\p{Han}a-zA-Z0-9_.]/u", "", $fileName); // 删除非法字符
     $uploadFile = $targetDir . '/' . $cleanFileName;
 
     // 允许的文件类型
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     );
 
     // 允许的文件大小（以字节为单位）
-    $allowedFileSize = 20971520; // 20MB
+    $allowedFileSize = 104857600; // 100MB
 
     $fileExtension = strtolower(pathinfo($cleanFileName, PATHINFO_EXTENSION));
     $fileHeader = $_FILES['file']['tmp_name'];
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     if (!in_array($fileExtension, $allowedExtensions)) {
         echo "仅支持上传 .pdf, .txt, .jpg, .jpeg, .png, .doc, .docx, .xls, .xlsx, .ppt, .pptx 格式的文件。";
     } elseif ($_FILES['file']['size'] > $allowedFileSize) {
-        echo "文件大小超出限制。请上传不超过 20MB 的文件。";
+        echo "文件大小超出限制。请上传不超过 100MB 的文件。";
     } elseif (!in_array($fileMimeType, array(
         'application/pdf',
         'text/plain',

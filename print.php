@@ -1,6 +1,6 @@
 <?php
 $filename = $_POST['filename'];
-$cleanedFilename = preg_replace('/[^\p{Han}a-zA-Z0-9_.-]/u', '', $filename); // 去除文件名中的非法字符并保留中文
+$cleanedFilename = preg_replace('/[^\p{Han}a-zA-Z0-9_.]/u', '', $filename); // 去除文件名中的非法字符并保留中文
 $filePath = '/home/ubuntu/downloads/cache/' . urldecode($cleanedFilename); // 对文件名进行解码
 
 // 允许的文件类型
@@ -12,6 +12,8 @@ $allowedFileSize = 10485760; // 10MB
 
 if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
     echo "仅支持打印后缀为 .pdf 的文件。";
+} else if (filesize($filePath) === 0) {
+    echo "文件大小为0，请上传有效文件。";
 } elseif (filesize($filePath) > $allowedFileSize) {
     echo "文件大小超出限制。请打印不超过 10MB 的文件。";
 } else {
@@ -26,7 +28,7 @@ if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
             // 将页数转换为整数形式
             $pageCount = intval($pageCount);
             
-            echo "文件已经成功打印并删除，共 " . $pageCount . " 页。";
+            echo "文件已经成功打印并删除，共 " . $pageCount . " 面。";
             echo "打印费用为：" . ($pageCount * 0.1) . "元。"; // 将页数乘以 0.1，显示打印费用
             
             // 将页数写入pagecache.txt文件

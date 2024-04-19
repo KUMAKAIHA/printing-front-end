@@ -58,7 +58,7 @@ if ($pageCount === false) {
 }
 
 // 格式化日志行
-$logLine = $nextSequence . ' | ' . date('Y-m-d H:i:s') . ' | 系统信息: ' . $userAgent . ' | 文件名称: ' . $filename . ' | 页数: ' . $pageCount . PHP_EOL;
+$logLine = $nextSequence . ' | ' . date('Y-m-d H:i:s') . ' | 系统信息: ' . $userAgent . ' | 文件名称: ' . $filename . ' | 黑白单面' . ' | 页数: ' . $pageCount . PHP_EOL;
 
 // 将日志行追加到日志文件
 $result = file_put_contents($logFilePath, $logLine, FILE_APPEND | LOCK_EX);
